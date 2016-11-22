@@ -29,31 +29,39 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity if_id is
+entity ex_mem is
 	port(
 		rst : in STD_LOGIC;
 		clk : in STD_LOGIC;
-		if_pc : in STD_LOGIC_VECTOR(15 downto 0);
-		if_inst : in STD_LOGIC_VECTOR(15 downto 0);
-		id_pc : out STD_LOGIC_VECTOR(15 downto 0);
-		id_inst : out STD_LOGIC_VECTOR(15 downto 0)
-	);
-end if_id;
+		-- EXE
+		ex_mem_to_reg : in STD_LOGIC; --Ö±½ÓÐ´Èë¼Ä´æÆ÷(0)/¶ÁÈ¡RAM(1)
+		ex_reg_write : in STD_LOGIC; --ÊÇ·ñÐ´Èë¼Ä´æÆ÷
+		ex_reg_dst : in STD_LOGIC_VECTOR(3 downto 0); -- Ä¿µÄ¼Ä´æÆ÷µØÖ·£¨À©Õ¹Îª4Î»£©
+		ex_result : in STD_LOGIC_VECTOR(15 downto 0);
+		-- MEM
+		mem_mem_to_reg : out STD_LOGIC; --Ö±½ÓÐ´Èë¼Ä´æÆ÷(0)/¶ÁÈ¡RAM(1)
+		mem_reg_write : out STD_LOGIC; --ÊÇ·ñÐ´Èë¼Ä´æÆ÷
+		mem_reg_dst : out STD_LOGIC_VECTOR(3 downto 0); -- Ä¿µÄ¼Ä´æÆ÷µØÖ·£¨À©Õ¹Îª4Î»£©
+		mem_result : out STD_LOGIC_VECTOR(15 downto 0)
+);
+end ex_mem;
 
-architecture Behavioral of if_id is
+architecture Behavioral of ex_mem is
 begin
 	process(clk, rst)
 	begin
 		if clk'event and clk = '1' then
-			id_pc <= if_pc;
-			id_inst <= if_inst;
+			ex_mem_to_reg <= mem_mem_to_reg;
+			ex_reg_write <= mem_reg_write;
+			ex_reg_dst <= mem_reg_dst;
+			ex_result <= mem_result;
 		end if;
 		if rst = '0' then
-			if_pc <= x"0000";
-			if_inst <= x"0000";
+			ex_mem_to_reg <= x"0000";
+			ex_reg_write <= x"0000";
+			ex_reg_dst <= x"0000";
+			ex_result <= x"0000";
 		end if;
 	end process;
-
-
 end Behavioral;
 
