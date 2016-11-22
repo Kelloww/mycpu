@@ -35,11 +35,11 @@ entity mem_wb is
 		clk : in STD_LOGIC;
 		mem_wdata : in STD_LOGIC_VECTOR(15 downto 0);
 		mem_reg_dst : in STD_LOGIC_VECTOR(3 downto 0);
-		mem_reg_write : in STD_LOGIC; --ÃŠÃ‡Â·Ã±ÃÂ´ÃˆÃ«Â¼Ã„Â´Ã¦Ã†Ã·
+		mem_reg_write : in STD_LOGIC; --ÊÇ·ñĞ´Èë¼Ä´æÆ÷
 
 		wb_wdata : out STD_LOGIC_VECTOR(15 downto 0);
 		wb_reg_dst : out STD_LOGIC_VECTOR(3 downto 0);
-		wb_reg_write : out STD_LOGIC --ÃŠÃ‡Â·Ã±ÃÂ´ÃˆÃ«Â¼Ã„Â´Ã¦Ã†Ã·
+		wb_reg_write : out STD_LOGIC --ÊÇ·ñĞ´Èë¼Ä´æÆ÷
 );
 end mem_wb;
 
@@ -47,16 +47,17 @@ architecture Behavioral of mem_wb is
 begin
 	process(clk, rst)
 	begin
-		if clk'event and clk = '1' then
-			mem_wdata <= wb_wdata;
-			mem_reg_dst <= wb_reg_dst;
-			mem_reg_write <= wb_reg_write;
-		end if;
 		if rst = '0' then
-			mem_wdata <= x"0000";
-			mem_reg_dst <= x"0000";
-			mem_reg_write <= x"0000";
-		end if;
+			wb_wdata <= x"0000";
+			wb_reg_dst <= "0000";
+			wb_reg_write <= '0';
+		else 
+			if clk'event and clk = '1' then --Ê±ÖÓÉÏÉıÑØ
+				wb_wdata <= mem_wdata;
+				wb_reg_dst <= mem_reg_dst;
+				wb_reg_write <= mem_reg_write;
+			end if;
+		end if;		
 	end process;
 end Behavioral;
 

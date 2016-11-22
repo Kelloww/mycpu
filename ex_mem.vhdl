@@ -34,14 +34,14 @@ entity ex_mem is
 		rst : in STD_LOGIC;
 		clk : in STD_LOGIC;
 		-- EXE
-		ex_mem_to_reg : in STD_LOGIC; --直接写入寄存器(0)/读取RAM(1)
-		ex_reg_write : in STD_LOGIC; --是否写入寄存器
-		ex_reg_dst : in STD_LOGIC_VECTOR(3 downto 0); -- 目的寄存器地址（扩展为4位）
+		ex_mem_to_reg : in STD_LOGIC; --脰卤陆脫脨麓脠毛录脛麓忙脝梅(0)/露脕脠隆RAM(1)
+		ex_reg_write : in STD_LOGIC; --脢脟路帽脨麓脠毛录脛麓忙脝梅
+		ex_reg_dst : in STD_LOGIC_VECTOR(3 downto 0); -- 脛驴碌脛录脛麓忙脝梅碌脴脰路拢篓脌漏脮鹿脦陋4脦禄拢漏
 		ex_result : in STD_LOGIC_VECTOR(15 downto 0);
 		-- MEM
-		mem_mem_to_reg : out STD_LOGIC; --直接写入寄存器(0)/读取RAM(1)
-		mem_reg_write : out STD_LOGIC; --是否写入寄存器
-		mem_reg_dst : out STD_LOGIC_VECTOR(3 downto 0); -- 目的寄存器地址（扩展为4位）
+		mem_mem_to_reg : out STD_LOGIC; --脰卤陆脫脨麓脠毛录脛麓忙脝梅(0)/露脕脠隆RAM(1)
+		mem_reg_write : out STD_LOGIC; --脢脟路帽脨麓脠毛录脛麓忙脝梅
+		mem_reg_dst : out STD_LOGIC_VECTOR(3 downto 0); -- 脛驴碌脛录脛麓忙脝梅碌脴脰路拢篓脌漏脮鹿脦陋4脦禄拢漏
 		mem_result : out STD_LOGIC_VECTOR(15 downto 0)
 );
 end ex_mem;
@@ -51,19 +51,16 @@ begin
 	process(clk, rst)
 	begin
 		if rst = '0' then
-			mem_mem_to_reg <= '0';
-			mem_reg_write <= '0';
-			mem_reg_dst <= "0000";
-			mem_result <= x"0000";
-		else 
-			if clk'event and clk = '1' then --时钟上升沿
-				mem_mem_to_reg <= ex_mem_to_reg;
-				mem_reg_write <= ex_reg_write;
-				mem_reg_dst <= ex_reg_dst;
-				mem_result <= ex_result;
-			end if;
-		end if;	
-		
+			ex_mem_to_reg <= x"0000";
+			ex_reg_write <= x"0000";
+			ex_reg_dst <= x"0000";
+			ex_result <= x"0000";
+		else if clk'event and clk = '1' then
+			ex_mem_to_reg <= mem_mem_to_reg;
+			ex_reg_write <= mem_reg_write;
+			ex_reg_dst <= mem_reg_dst;
+			ex_result <= mem_result;
+		end if;		
 	end process;
 end Behavioral;
 

@@ -29,29 +29,32 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity if_id is
+entity mem_wb is
 	port(
 		rst : in STD_LOGIC;
 		clk : in STD_LOGIC;
-		if_pc : in STD_LOGIC_VECTOR(15 downto 0);
-		if_inst : in STD_LOGIC_VECTOR(15 downto 0);
-		id_pc : out STD_LOGIC_VECTOR(15 downto 0);
-		id_inst : out STD_LOGIC_VECTOR(15 downto 0)
-	);
-end if_id;
+		mem_wdata : in STD_LOGIC_VECTOR(15 downto 0);
+		mem_reg_dst : in STD_LOGIC_VECTOR(3 downto 0);
+		mem_reg_write : in STD_LOGIC; --ÊÇ·ñÐ´Èë¼Ä´æÆ÷
 
-architecture Behavioral of if_id is
+		wb_wdata : out STD_LOGIC_VECTOR(15 downto 0);
+		wb_reg_dst : out STD_LOGIC_VECTOR(3 downto 0);
+		wb_reg_write : out STD_LOGIC --ÊÇ·ñÐ´Èë¼Ä´æÆ÷
+);
+end mem_wb;
+
+architecture Behavioral of mem_wb is
 begin
 	process(clk, rst)
 	begin
 		if rst = '0' then
-			id_pc <= x"0000";
-			id_inst <= x"0000";
-		else 
-			if clk'event and clk = '1' then
-				id_pc <= if_pc;
-				id_inst <= if_inst;
-			end if;
+			wb_wdata <= x"0000";
+			wb_reg_dst <= x"0000";
+			wb_reg_write <= x"0000";
+		else if clk'event and clk = '1' then
+			wb_wdata <= mem_wdata;
+			wb_reg_dst <= mem_reg_dst;
+			wb_reg_write <= mem_reg_write;
 		end if;
 	end process;
 end Behavioral;
